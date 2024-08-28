@@ -92,3 +92,7 @@ fun MyImage(
     )
 }
 
+//https://blog.csdn.net/downanddusk/article/details/136037007
+//https://github.com/JetBrains/compose-multiplatform/issues/3967
+//https://github.com/life888888/cjk-fonts-ttf
+//https://github.com/ISNing/XWareManage/commit/7c3d63ce93efa6bc169f2c33c5c8be3511f59bb4
