@@ -28,3 +28,12 @@ You can open the web application by running the `:composeApp:wasmJsBrowserDevelo
 
 To build wasmJs browser distribution target:
 `./gradlew :composeApp:wasmJsBrowserRun -t --quiet`
+
+
+//build/dist/wasmJs
+To build wasmJs browser distribution target:
+`./gradlew :composeApp:wasmJsBrowserDistribution`
+
+ 
+本地
+`./gradlew run`

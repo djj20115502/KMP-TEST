@@ -15,29 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import kotlinproject.composeapp.generated.resources.NotoSansSC_Regular
-import kotlinproject.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun App() {
+fun App(typography: Typography? = null) {
     MaterialTheme(
-        typography = Typography(
-            defaultFontFamily = FontFamily(
-                org.jetbrains.compose.resources.Font(
-                    Res.font.NotoSansSC_Regular,
-                    weight = FontWeight.Normal
-                ),
-            )
-        )
+        typography = typography ?: MaterialTheme.typography
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             val navController = rememberNavController()
@@ -102,18 +91,7 @@ fun MyImage(
     )
 }
 
-//suspend fun loadCjkFont(): FontFamily {
-//     Resource.f
-//    val regular = resource("font/NotoSansCJKsc-Regular.ttf").readBytes()
-//    val bold = resource("font/NotoSansCJKsc-Bold.ttf").readBytes()
-//    val italic = resource("font/NotoSansCJKsc-Italic.ttf").readBytes()
-//
-//    return FontFamily(
-//        Font(identity = "CJKRegular", data = regular, weight = FontWeight.Normal),
-//        Font(identity = "CJKBold", data = bold, weight = FontWeight.Bold),
-//        Font(identity = "CJKItalic", data = italic, style = FontStyle.Italic),
-//    )
-//}
+
 //https://blog.csdn.net/downanddusk/article/details/136037007
 //https://github.com/JetBrains/compose-multiplatform/issues/3967
 //https://github.com/life888888/cjk-fonts-ttf

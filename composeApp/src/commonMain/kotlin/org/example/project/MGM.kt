@@ -1,7 +1,13 @@
 package org.example.project
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,7 +23,6 @@ import kotlinproject.composeapp.generated.resources.icon_tip
 import kotlinproject.composeapp.generated.resources.icon_worky
 import kotlinproject.composeapp.generated.resources.img_box
 import kotlinproject.composeapp.generated.resources.img_money
-import kotlinproject.composeapp.generated.resources.img_over
 import kotlinproject.composeapp.generated.resources.img_title
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -48,6 +53,7 @@ fun MGMScreenContent(
 
     }
 }
+
 @Preview
 @Composable
 private fun MGMScreenContentNormal() {
@@ -71,7 +77,7 @@ private fun MGMScreenContentNormal() {
         }
         Text(
             "敬請期待\n" +
-                "Worky未來不定時推出的活動",
+                    "Worky未來不定時推出的活動",
             color = Color(0xFF2C2C2C),
             fontSize = 20.sp
         )
@@ -93,7 +99,7 @@ private fun MGMScreenContentOver() {
         Div(34f)
         Text(
             "敬請期待\n" +
-                "Worky未來不定時推出的活動",
+                    "Worky未來不定時推出的活動",
             color = Color(0xFF2C2C2C),
             fontSize = 20.sp,
             textAlign = TextAlign.Center
