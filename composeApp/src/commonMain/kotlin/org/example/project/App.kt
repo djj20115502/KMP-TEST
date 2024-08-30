@@ -1,6 +1,5 @@
 package org.example.project
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,21 +8,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import kotlinproject.composeapp.generated.resources.NotoSansSC_Regular
 import kotlinproject.composeapp.generated.resources.Res
-import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -31,7 +29,16 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    MaterialTheme(
+        typography = Typography(
+            defaultFontFamily = FontFamily(
+                org.jetbrains.compose.resources.Font(
+                    Res.font.NotoSansSC_Regular,
+                    weight = FontWeight.Normal
+                ),
+            )
+        )
+    ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             val navController = rememberNavController()
             NavHost(
@@ -43,6 +50,8 @@ fun App() {
                 composable(route = "MGM-published") { MGMScreenContent(published = true) }
                 composable(route = "MGM") { MGMScreenContent() }
             }
+
+
             Row {
                 listOf("MGM-over", "MGM-published", "MGM").forEach {
                     Button(
@@ -73,6 +82,7 @@ fun App() {
     }
 }
 
+
 @Composable
 @Preview
 fun MyImage(
@@ -92,6 +102,18 @@ fun MyImage(
     )
 }
 
+//suspend fun loadCjkFont(): FontFamily {
+//     Resource.f
+//    val regular = resource("font/NotoSansCJKsc-Regular.ttf").readBytes()
+//    val bold = resource("font/NotoSansCJKsc-Bold.ttf").readBytes()
+//    val italic = resource("font/NotoSansCJKsc-Italic.ttf").readBytes()
+//
+//    return FontFamily(
+//        Font(identity = "CJKRegular", data = regular, weight = FontWeight.Normal),
+//        Font(identity = "CJKBold", data = bold, weight = FontWeight.Bold),
+//        Font(identity = "CJKItalic", data = italic, style = FontStyle.Italic),
+//    )
+//}
 //https://blog.csdn.net/downanddusk/article/details/136037007
 //https://github.com/JetBrains/compose-multiplatform/issues/3967
 //https://github.com/life888888/cjk-fonts-ttf
