@@ -36,7 +36,9 @@ kotlin {
     iosSimulatorArm64()
     
     jvm()
-    
+    js {
+        browser()
+    }
     sourceSets {
         commonMain.dependencies {
             // put your Multiplatform dependencies here

@@ -37,3 +37,9 @@ To build wasmJs browser distribution target:
  
 本地
 `./gradlew run`
+
+
+To run js browser target:
+`./gradlew :composeApp:jsBrowserRun`  
+To build js browser target:
+`./gradlew :composeApp:jsBrowserDistribution`  
