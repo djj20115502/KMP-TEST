@@ -39,6 +39,8 @@ To build wasmJs browser distribution target:
 `./gradlew run`
 
 
+[KMP JS 說明](https://book.kotlincn.net/text/wasm-js-interop.html)
+
 To run js browser target:
 `./gradlew :composeApp:jsBrowserRun`  
 To build js browser target:
