@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.serialization)
     kotlin("kapt")
 }
 
@@ -75,6 +76,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.serialization.json)
             implementation(projects.shared)
 
             //https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-navigation-routing.html#setup

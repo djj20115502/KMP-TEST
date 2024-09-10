@@ -1,5 +1,13 @@
 package org.example.project.mult
 
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import org.example.project.EchoLog
+
 
 /**
  *
@@ -12,17 +20,33 @@ package org.example.project.mult
  * }
  *
  * */
+@OptIn(DelicateCoroutinesApi::class)
 actual fun request(string: String, callBack: (String) -> Unit) {
     console.log("request", string)
-    map[string] = callBack
+    val id = string.getId()
+    map[id] = callBack
+    EchoLog.log(id)
     if (string.isEmpty()) {
         js("javascript:appResponse('XX') ")
+    }
+    GlobalScope.launch {
+        delay(15 * 1000)
+        map.remove(id)
     }
     native.webRequest(string)
 }
 
 val map = hashMapOf<String, (String) -> Unit>()
 
+fun String.getId(): String {
+    return try {
+        EchoLog.log(("data: " +this))
+        Json.parseToJsonElement(this ).jsonObject["id"].toString()
+    } catch (e: Throwable) {
+        EchoLog.log(("error: " + e.message))
+        ""
+    }
+}
 
 //這部分由app本地注入
 external class Native {
@@ -31,38 +55,16 @@ external class Native {
 
 external val native: Native
 
-
-/**
- *
- * {
- *        "id": "1", //由web端傳遞過來的id
- *        "res": {}, //後端返回的ResponseMessage  ，如果網絡錯誤，app本地自行創建一個
- * }
- *
- * */
-
 @OptIn(ExperimentalJsExport::class)
 @JsExport
 fun httpCall(string: String) {
-    console.log("httpCall $string ${map.values.size}")
-    map.values.firstOrNull()?.run {
+    val id = string.getId()
+    console.log("httpCall id $id $string ${map.values.size}")
+    map[id]?.apply {
         this(string)
+        map.remove(id)
     }
-    map.clear()
-    console.log("httpCall OVER")
-
 }
 
-//data class RE(
-//    @SerializedName("id")
-//    var id: String? = null,
-//    @SerializedName("method")
-//    var method: String? = null,
-//    @SerializedName("needToken")
-//    var needToken: Boolean? = null,
-//    @SerializedName("params")
-//    var params: Params? = null,
-//    @SerializedName("path")
-//    var path: String? = null
-//)
+
 

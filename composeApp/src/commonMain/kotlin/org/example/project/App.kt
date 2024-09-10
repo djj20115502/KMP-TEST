@@ -12,6 +12,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -21,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import org.example.project.mult.request
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.example.project.mult.RequestBean
 import org.example.project.mult.requestCover
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -61,25 +67,45 @@ fun App(typography: Typography? = null) {
                     }
                 }
             }
-            Row {
-                Button(
-                    modifier = Modifier.size(100.dp),
-                    onClick = {
-                        requestCover("{\"id\": \"111\", \"needToken\": true,\"method\": \"GET\" , \"path\": \"v1/employer/profile\"}"){}
-                    }) {
-                    Text("測試接口1")
-                }
-                Padding(30f)
-                Button(
-                    modifier = Modifier.size(100.dp),
-                    onClick = {
-                        requestCover(""){
+            var text by remember { mutableStateOf("") }
+            Column {
+                Row {
+                    Button(
+                        modifier = Modifier.size(100.dp),
+                        onClick = {
+                            requestCover("{\"id\": \"111\", \"needToken\": true,\"method\": \"GET\" , \"path\": \"v1/employer/profile\"}") {}
+                        }) {
+                        Text("測試接口1")
+                    }
+                    Padding(30f)
+                    Button(
+                        modifier = Modifier.size(100.dp),
+                        onClick = {
+                            requestCover("") {
 
-                        }
-                    }) {
-                    Text("測試接口2")
+                            }
+                        }) {
+                        Text("測試接口2")
+                    }
+                    Button(
+                        modifier = Modifier.size(100.dp),
+                        onClick = {
+                            requestCover(
+                                RequestBean(
+                                    id = "xxxx",
+                                    method = "GET",
+                                    path = "v1/employer/system-info"
+                                )
+                            ) {
+                                text = Json.encodeToString(it)
+                            }
+                        }) {
+                        Text("system-info")
+                    }
                 }
+                Text("結果 $text")
             }
+
 
         }
     }

@@ -20,8 +20,15 @@
 <script  src="composeApp.js"></script>
 <script>
     function appResponse(s){
+
        console.log("appResponse", s)
-       console.log(composeApp.org.example.project.mult.httpCall(s))
+       var data
+       if(typeof s == 'string'){
+       data= s
+       }
+       data= JSON.stringify(s)
+       console.log("appResponse",    data)
+       console.log(composeApp.org.example.project.mult.httpCall(   data))
     }
 </script>
 </body>

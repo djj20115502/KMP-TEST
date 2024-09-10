@@ -9,4 +9,5 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.ksp)
+    alias(libs.plugins.serialization) apply false
 }
