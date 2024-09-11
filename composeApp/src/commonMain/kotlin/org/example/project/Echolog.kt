@@ -1,8 +1,12 @@
 package org.example.project
 
+import androidx.compose.runtime.mutableStateOf
 
-object EchoLog {
-    fun log(string: String) {
-        println("echo-log "+string)
-    }
+
+val log = mutableStateOf("")
+
+fun myLog(vararg string: String?) {
+    val s = string.joinToString(" ")
+    println("echo-log $s")
+    log.value += s + "\n"
 }

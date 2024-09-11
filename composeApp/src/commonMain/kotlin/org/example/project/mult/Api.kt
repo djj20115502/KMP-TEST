@@ -59,13 +59,14 @@ data class ResponseBean<T>(
     var id: String? = null,
     var res: ResponseMessage<T>? = null,
 )
+
 //@JsonIgnoreProperties(ignoreUnknown = true)
 @Serializable
 data class ResponseMessage<T>(
     @SerialName("agreementUpdatedAt")
     var agreementUpdatedAt: Int? = null,
     @SerialName("code")
-    var code: Int? = null,
+    var code: String? = null,
     @SerialName("data")
     var data: T? = null,
     @SerialName("id")
@@ -86,7 +87,22 @@ data class ResponseMessage<T>(
     var success: Boolean? = null,
     @SerialName("title")
     var title: String? = null
-)
+) {
+    companion object {
+
+        fun error(error: String?): ResponseMessage<String> {
+            return error("-1", error)
+        }
+
+
+        fun error(errorCode: String, error: String?): ResponseMessage<String> {
+            val rt = ResponseMessage<String>()
+            rt.code = errorCode
+            rt.message = error
+            return rt
+        }
+    }
+}
 
 
 

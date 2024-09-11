@@ -1,12 +1,15 @@
 package org.example.project.mult
 
+import kotlinx.browser.window
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
-import org.example.project.EchoLog
+import org.example.project.myLog
+import org.w3c.dom.get
 
 
 /**
@@ -22,49 +25,79 @@ import org.example.project.EchoLog
  * */
 @OptIn(DelicateCoroutinesApi::class)
 actual fun request(string: String, callBack: (String) -> Unit) {
-    console.log("request", string)
+    myLog("request", string)
     val id = string.getId()
     map[id] = callBack
-    EchoLog.log(id)
+    myLog(id)
     if (string.isEmpty()) {
-        js("javascript:appResponse('XX') ")
+        return
     }
     GlobalScope.launch {
         delay(15 * 1000)
         map.remove(id)
     }
-    native.webRequest(string)
+    try {
+        callNative(id, string)
+    } catch (e: Throwable) {
+        myLog(e.message)
+    }
 }
 
 val map = hashMapOf<String, (String) -> Unit>()
+val android: dynamic = window["native"]?.webRequest
+val ios: dynamic = window["webkit"]?.messageHandlers?.webRequest?.postMessage
+fun callNative(id: String, string: String) {
+    myLog("android  " + jsTypeOf(android))
+    myLog("android  " + (jsTypeOf(android) == "function"))
+    myLog("ios  " + jsTypeOf(ios))
+    try {
+        //這裏必須這樣寫，不然 會報錯  java bridge method can't be invoked on a non injected object
+        if (jsTypeOf(android) == "function") {
+            window["native"]?.webRequest(string)
+        } else if (jsTypeOf(ios) == "function") {
+            window["webkit"]?.messageHandlers?.webRequest?.postMessage(string)
+        } else {
+            httpCall("{\"id\" :\"$id\" , \"res\"  : ${Json.encodeToString(ResponseMessage.error("undefined data"))}}")
+        }
+    } catch (e: Throwable) {
+        myLog(e.message)
+        httpCall("{\"id\"  :\"$id\" , \"res\"   : ${Json.encodeToString(ResponseMessage.error("undefined"))}}")
+    }
+}
+
+/**
+ *
+ * {
+ *        "id": "1", //由web端傳遞過來的id
+ *        "res": {}, //後端返回的ResponseMessage  ，如果網絡錯誤，app本地自行創建一個
+ * }
+ * */
 
 fun String.getId(): String {
     return try {
-        EchoLog.log(("data: " +this))
-        Json.parseToJsonElement(this ).jsonObject["id"].toString()
+        myLog(("data: $this"))
+        Json.parseToJsonElement(this).jsonObject["id"].toString()
     } catch (e: Throwable) {
-        EchoLog.log(("error: " + e.message))
+        myLog(("error: " + e.message))
         ""
     }
 }
 
-//這部分由app本地注入
-external class Native {
-    fun webRequest(string: String)
-}
-
-external val native: Native
+////這部分由app本地注入
+//external class Native {
+//    fun webRequest(string: String)
+//}
+//
+//external val native: Native
 
 @OptIn(ExperimentalJsExport::class)
 @JsExport
 fun httpCall(string: String) {
     val id = string.getId()
-    console.log("httpCall id $id $string ${map.values.size}")
     map[id]?.apply {
         this(string)
         map.remove(id)
     }
 }
-
 
 

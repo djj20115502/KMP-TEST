@@ -220,7 +220,7 @@ fun MyInputView3(
         @Composable { innerTextField -> innerTextField() },
     textModifier: Modifier = Modifier,
     focusRequesterCallBack: (data: FocusRequester) -> Unit = {},
-    valueChange: (data: String) -> Unit = { s: String -> EchoLog.log(s) },
+    valueChange: (data: String) -> Unit = { s: String -> myLog(s) },
 ) {
     focusRequesterCallBack(focusRequester)
     var inputContent by rememberSaveable(value + valueKey) {
@@ -280,7 +280,7 @@ fun filterEmoji(input: String?): Boolean {
         val find =
             input.matches(Regex("[\\ud83c\\udc00-\\ud83c\\udfff]|[\\ud83d\\udc00-\\ud83d\\udfff]|[\\u2600-\\u27ff]"))
         if (find) {
-            EchoLog.log("输入字符串:" + input + "   含有表情包")
+            myLog("输入字符串:" + input + "   含有表情包")
         }
         return find
     }

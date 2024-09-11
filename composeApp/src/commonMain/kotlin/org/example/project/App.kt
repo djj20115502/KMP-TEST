@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -52,9 +54,14 @@ fun App(typography: Typography? = null) {
                     composable(route = "MGM-over") { MGMScreenContent(isOver = true) }
                     composable(route = "MGM-published") { MGMScreenContent(published = true) }
                     composable(route = "MGM") { MGMScreenContent() }
+                    composable(route = "Log") {
+                        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                            Text(log.value)
+                        }
+                    }
                 }
                 Row {
-                    listOf("MGM-over", "MGM-published", "MGM").forEach {
+                    listOf("MGM-over", "MGM-published", "MGM", "Log").forEach {
                         Button(
                             modifier = Modifier.height(30.myDp).weight(1f),
                             onClick = {
